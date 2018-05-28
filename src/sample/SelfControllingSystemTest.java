@@ -17,7 +17,7 @@ public class SelfControllingSystemTest  {
         System.out.println("Jesli chcesz wstrzyknac bledy wcisnij 1, jesli nie, wcisnij 2");
         choice = scannerChoice.nextInt();
         if (choice == 1) {
-            HammingErrorDetection.injectTheMistakes(hammingWord);
+            HammingErrorDetection.injectTheMistakesRandom(hammingWord);
             result = HammingErrorDetection.checkHammingCorectness(hammingWord);
             System.out.print("Slowo Hamminga z bledami: ");
             for (Integer x : hammingWord) {
