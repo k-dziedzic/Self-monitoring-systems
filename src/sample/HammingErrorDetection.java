@@ -62,17 +62,7 @@ public class HammingErrorDetection {
                 hammingWord[i] = Integer.parseInt(temp);
                 counter++;
 
-                if (hammingWord[i] == 1) {
-                    String tempBinaryIndex = Integer.toBinaryString(i + 1);
-                    binaryIndexes.add(tempBinaryIndex);
-
-
-                    for (int j = tempBinaryIndex.length(); j < binaryIndexes.get(0).length(); j++) {
-                        tempBinaryIndex = "0" + tempBinaryIndex;
-                        binaryIndexes.set(indexValue, tempBinaryIndex);
-                    }
-                    indexValue++;
-                }
+                indexValue = getIndexValue(indexValue, binaryIndexes, hammingWord, i);
             }
         }
 
@@ -94,22 +84,28 @@ public class HammingErrorDetection {
         return hammingWord;
     }
 
+    private static int getIndexValue(int indexValue, ArrayList<String> binaryIndexes, Integer[] hammingWord, int i) {
+        if (hammingWord[i] == 1) {
+            String tempBinaryIndex = Integer.toBinaryString(i + 1);
+            binaryIndexes.add(tempBinaryIndex);
+
+
+            for (int j = tempBinaryIndex.length(); j < binaryIndexes.get(0).length(); j++) {
+                tempBinaryIndex = "0" + tempBinaryIndex;
+                binaryIndexes.set(indexValue, tempBinaryIndex);
+            }
+            indexValue++;
+        }
+        return indexValue;
+    }
+
     public static boolean checkHammingCorectness(Integer[] hammingWord) {
         int indexValue = 0;
         boolean corectness = true;
         ArrayList<String> binaryIndexes = new ArrayList<>();
 
         for (int i = hammingWord.length - 1; i >= 0; i--) {
-            if (hammingWord[i] == 1) {
-                String tempBinaryIndex = Integer.toBinaryString(i + 1);
-                binaryIndexes.add(tempBinaryIndex);
-
-                for (int j = tempBinaryIndex.length(); j < binaryIndexes.get(0).length(); j++) {
-                    tempBinaryIndex = "0" + tempBinaryIndex;
-                    binaryIndexes.set(indexValue, tempBinaryIndex);
-                }
-                indexValue++;
-            }
+            indexValue = getIndexValue(indexValue, binaryIndexes, hammingWord, i);
         }
 
         for (int j = 0; j < binaryIndexes.get(0).length(); j++) {
@@ -140,52 +136,56 @@ public class HammingErrorDetection {
     }
 
     public static void injectTheMistakes(Integer[] hammingWord, String position) {
-        List<Integer> list=new ArrayList<>();
-        for (int i=0; i<position.length(); i++){
-            if(Character.isDigit(position.charAt(i))){
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i < position.length(); i++) {
+            if (Character.isDigit(position.charAt(i))) {
                 list.add(Integer.parseInt(String.valueOf(position.charAt(i))));
             }
         }
 
         for (int i = 0; i < list.size(); i++) {
-            if(hammingWord[hammingWord.length-list.get(i)]==0)
-            {
-                hammingWord[hammingWord.length-list.get(i)]=1;
-            }
-            else{
-                hammingWord[hammingWord.length-list.get(i)]=0;
+            if (hammingWord[hammingWord.length - list.get(i)] == 0) {
+                hammingWord[hammingWord.length - list.get(i)] = 1;
+            } else {
+                hammingWord[hammingWord.length - list.get(i)] = 0;
             }
         }
     }
 
-    public static String mistakePostion(Integer []tab, Integer []tab2){
-        String position="";
-        for(int i=0; i<tab.length; i++){
-            if(tab[i]!=tab2[i]){
-                position+=tab.length-i+"; ";
+    public static String mistakePostion(Integer[] tab, Integer[] tab2) {
+        String position = "";
+        for (int i = 0; i < tab.length; i++) {
+            if (tab[i] != tab2[i]) {
+                position += tab.length - i + "; ";
             }
         }
-        position=position.substring(0,position.length()-2);
+        position = position.substring(0, position.length() - 2);
         return position;
     }
 
-    public static Integer [] recoverCorrectCode (Integer [] tab, String position ){
-        List<Integer> list=new ArrayList<>();
-        for (int i=0; i<position.length(); i++){
-            if(position.charAt(i)!=' ' && position.charAt(i)!=';'){
+    public static Integer[] recoverCorrectCode(Integer[] tab, String position) {
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i < position.length(); i++) {
+            if (position.charAt(i) != ' ' && position.charAt(i) != ';') {
                 list.add(Integer.parseInt(String.valueOf(position.charAt(i))));
             }
         }
-        for(int i=0; i<list.size(); i++){
-            if(tab[tab.length-list.get(i)]==0)
-            {
-                tab[tab.length-list.get(i)]=1;
-            }
-            else{
-                tab[tab.length-list.get(i)]=0;
+        for (int i = 0; i < list.size(); i++) {
+            if (tab[tab.length - list.get(i)] == 0) {
+                tab[tab.length - list.get(i)] = 1;
+            } else {
+                tab[tab.length - list.get(i)] = 0;
             }
         }
 
         return tab;
+    }
+
+    public static String tableOfIntegerToString(Integer[] tab) {
+        String hammingWord = "";
+        for (Integer x : tab) {
+            hammingWord += x;
+        }
+        return hammingWord;
     }
 }
