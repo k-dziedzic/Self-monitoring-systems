@@ -90,7 +90,17 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <ProgressBar fx:id="progressBar" layoutX="26.0" layoutY="182.0" prefHeight="8.0" prefWidth="264.0" progress="0.0" visible="false" />
+                  <ProgressBar fx:id="progressBar" layoutX="71.0" layoutY="182.0" prefHeight="20.0" prefWidth="169.0" progress="0.0" visible="false" />
+                  <ImageView fx:id="imageView1" fitHeight="66.0" fitWidth="41.0" layoutX="260.0" layoutY="172.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                     <image>
+                        <Image url="@2000px-Globe_icon.svg.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="imageView2" fitHeight="54.0" fitWidth="41.0" layoutX="2.0" layoutY="173.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                     <image>
+                        <Image url="@user_male2-512.png" />
+                     </image>
+                  </ImageView>
                </children>
             </Pane>
             <Line endY="150.0" layoutX="405.0" layoutY="298.0" startY="-100.0" stroke="WHITE" />

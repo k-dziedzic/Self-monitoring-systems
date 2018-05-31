@@ -3,9 +3,13 @@ package sample;
 
 import javafx.animation.*;
 import javafx.scene.control.*;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
+import javafx.scene.image.*;
 
 import java.io.File;
 import java.util.List;
@@ -34,11 +38,15 @@ public class Controller {
     public Label label1;
     public Label label2;
     public ProgressBar progressBar;
+    public ImageView imageView1;
+    public ImageView imageView2;
+
 
     private List<String> wordsFromFile;
     private Integer[] tab;
     private static final String PATH = "raport.txt";
     private boolean result = false;
+    private File selectedFile;
 
     public void fromFile() {
         if (radioButton1.isSelected()) {
@@ -54,7 +62,7 @@ public class Controller {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialDirectory(new File("../Self-monitoring systems"));
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("TXT files", "*.txt"));
-        File selectedFile = fileChooser.showOpenDialog(null);
+        selectedFile = fileChooser.showOpenDialog(null);
 
         if (selectedFile != null) {
             wordsFromFile = FileReader.loadFile(selectedFile.getAbsolutePath());
@@ -71,7 +79,10 @@ public class Controller {
     }
 
     public void check() {
-        if(radioButton1.isSelected() || !textField2.getText().isEmpty()) {
+        if((radioButton1.isSelected() && selectedFile != null ) || textField1.getText().matches("[01]+")) {
+            textField1.setStyle("-fx-border-color: null;");
+            radioButton1.setStyle("-fx-border-color: null");
+            button1.setStyle("-fx-border-color: null;");
             textField3.setVisible(false);
             textField4.setVisible(false);
             textField5.setVisible(false);
@@ -84,6 +95,8 @@ public class Controller {
             text5.setVisible(false);
             label1.setVisible(false);
             label2.setVisible(true);
+            imageView1.setVisible(true);
+            imageView2.setVisible(true);
             progressBar.setVisible(true);
 
 
@@ -110,6 +123,8 @@ public class Controller {
                 text5.setVisible(true);
                 label1.setVisible(true);
                 label2.setVisible(false);
+                imageView1.setVisible(false);
+                imageView2.setVisible(false);
                 progressBar.setVisible(false);
             });
             delay.play();
@@ -174,17 +189,35 @@ public class Controller {
                 textField7.setText(textField1.getText());
             }
         }
+        else if(!radioButton1.isSelected() && textField1.getText().isEmpty()){
+            System.out.println(!radioButton1.isSelected());
+            System.out.println(textField1.getText().isEmpty());
 
-        else{
             Alert alert = new Alert(Alert.AlertType.ERROR, "Wpisz kod binarny lub wybierz go z pliku,\naby wysłać dane.", ButtonType.OK);
+            textField1.setStyle("-fx-border-color: red;");
+            radioButton1.setStyle("-fx-border-color: red");
+            button1.setStyle("-fx-border-color: null;");
             alert.showAndWait();
         }
-
-
-
+        else if(!radioButton1.isSelected() && !textField1.getText().matches("[01]+")){
+            radioButton1.setStyle("-fx-border-color: null");
+            button1.setStyle("-fx-border-color: null;");
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Wpisz poprawny kod binarny (wartości 0 lub 1).", ButtonType.OK);
+            textField1.setStyle("-fx-border-color: red;");
+            alert.showAndWait();
+        }
+        else{
+            textField1.setStyle("-fx-border-color: null;");
+            radioButton1.setStyle("-fx-border-color: null");
+            button1.setStyle("-fx-border-color: red;");
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Nie wybrałeś żadnego pliku.", ButtonType.OK);
+            alert.showAndWait();
+        }
     }
 
     public void save() {
         FileReader.saveResult(tab, PATH, result);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Raport został zapisany do pliku", ButtonType.OK);
+        alert.showAndWait();
     }
 }
