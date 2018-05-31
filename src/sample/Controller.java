@@ -101,7 +101,9 @@ public class Controller {
     }
 
     public void check() {
-        if(((radioButton1.isSelected() && selectedFile != null && listView.getSelectionModel().getSelectedItem()!=null) || textField1.getText().matches("[01]+")) && (textField2.getText().isEmpty() || textField2.getText().matches("[0-99 ]+"))) {
+
+        if((radioButton1.isSelected() && selectedFile != null && listView.getSelectionModel().getSelectedItem()!=null || !radioButton1.isSelected()) &&((textField1.getText().matches("[01]+"))|| textField1.getText().isEmpty()) &&(textField2.getText().isEmpty() || textField2.getText().matches("[0-99 ]+") || radioButton2.isSelected())) {
+
             if (radioButton1.isSelected() && textField2.getText().isEmpty() && !radioButton2.isSelected())
             {
                 tab = createHammingWord(String.valueOf(listView.getSelectionModel().getSelectedItem()));
@@ -111,6 +113,7 @@ public class Controller {
                 textField5.setText("brak błędu");
                 textField6.setText("brak błędu");
                 textField7.setText(String.valueOf(listView.getSelectionModel().getSelectedItem()));
+                selectedFile=null;
             }
             else if (radioButton1.isSelected() && radioButton2.isSelected())
             {
@@ -123,6 +126,7 @@ public class Controller {
                 textField5.setText(mistakePosition);
                 textField6.setText(tableOfIntegerToString(recoverCorrectCode(tab, mistakePosition)));
                 textField7.setText(String.valueOf(listView.getSelectionModel().getSelectedItem()));
+                selectedFile=null;
             }
             else if (radioButton1.isSelected() && textField2.getText().matches("[0-99 ]+"))
             {
@@ -136,6 +140,7 @@ public class Controller {
                 textField5.setText(mistakePosition);
                 textField6.setText(tableOfIntegerToString(recoverCorrectCode(tab, mistakePosition)));
                 textField7.setText(String.valueOf(listView.getSelectionModel().getSelectedItem()));
+                selectedFile=null;
             }
 
             else if (!textField1.getText().isEmpty() && textField2.getText().isEmpty() && !radioButton2.isSelected())
@@ -180,6 +185,7 @@ public class Controller {
             textField1.setStyle("-fx-border-color: null;");
             radioButton1.setStyle("-fx-border-color: null");
             button1.setStyle("-fx-border-color: null;");
+            textField2.setStyle("-fx-border-color: null;");
             textField3.setVisible(false);
             textField4.setVisible(false);
             textField5.setVisible(false);
@@ -239,20 +245,23 @@ public class Controller {
             radioButton1.setStyle("-fx-border-color: red");
             button1.setStyle("-fx-border-color: null;");
             listView.setStyle("-fx-border-color: null;");
+            textField2.setStyle("-fx-border-color: null;");
             alert.showAndWait();
         }
         else if(!radioButton1.isSelected() && !textField1.getText().matches("[01]+")){
             radioButton1.setStyle("-fx-border-color: null");
             button1.setStyle("-fx-border-color: null;");
             listView.setStyle("-fx-border-color: null;");
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Wpisz poprawny kod binarny (wartości 0 lub 1).", ButtonType.OK);
+            textField2.setStyle("-fx-border-color: null;");
             textField1.setStyle("-fx-border-color: red;");
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Wpisz poprawny kod binarny (wartości 0 lub 1).", ButtonType.OK);
             alert.showAndWait();
         }
         else if(radioButton1.isSelected() && selectedFile != null && listView.getSelectionModel().getSelectedItem()==null){
             radioButton1.setStyle("-fx-border-color: null");
             textField1.setStyle("-fx-border-color: null;");
             button1.setStyle("-fx-border-color: null;");
+            textField2.setStyle("-fx-border-color: null;");
             listView.setStyle("-fx-border-color: red;");
             Alert alert = new Alert(Alert.AlertType.ERROR, "Wybierz wartość z listy.", ButtonType.OK);
             alert.showAndWait();
@@ -261,15 +270,20 @@ public class Controller {
             textField1.setStyle("-fx-border-color: null;");
             radioButton1.setStyle("-fx-border-color: null");
             listView.setStyle("-fx-border-color: null;");
+            textField2.setStyle("-fx-border-color: null;");
             button1.setStyle("-fx-border-color: red;");
             Alert alert = new Alert(Alert.AlertType.ERROR, "Nie wybrałeś żadnego pliku.", ButtonType.OK);
             alert.showAndWait();
         }
         else if(radioButton1.isSelected() || !textField1.getText().isEmpty() && !textField2.getText().matches("[0-99 ]+")){
+            textField1.setStyle("-fx-border-color: null;");
+            radioButton1.setStyle("-fx-border-color: null");
+            listView.setStyle("-fx-border-color: null;");
+            button1.setStyle("-fx-border-color: null;");
+            textField2.setStyle("-fx-border-color: red;");
             Alert alert = new Alert(Alert.AlertType.ERROR, "Wpisz miejsca błędów oddzielając je spacją\nnp. \"3 4 5\".", ButtonType.OK);
             alert.showAndWait();
         }
-
 
     }
 
