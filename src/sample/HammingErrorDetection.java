@@ -1,6 +1,7 @@
 package sample;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -136,18 +137,26 @@ public class HammingErrorDetection {
     }
 
     public static void injectTheMistakes(Integer[] hammingWord, String position) {
-        List<Integer> list = new ArrayList<>();
-        for (int i = 0; i < position.length(); i++) {
-            if (Character.isDigit(position.charAt(i))) {
-                list.add(Integer.parseInt(String.valueOf(position.charAt(i))));
-            }
+        String[] num = position.split(" ");
+        ArrayList<Integer> numList=new ArrayList<>();
+        for(String str:num){
+            numList.add(Integer.parseInt(str));
         }
 
-        for (int i = 0; i < list.size(); i++) {
-            if (hammingWord[hammingWord.length - list.get(i)] == 0) {
-                hammingWord[hammingWord.length - list.get(i)] = 1;
+        for (int i = 0; i < numList.size(); i++) {
+            if (numList.get(i)>hammingWord.length) {
+                numList.remove(i);
+                --i;
+
+            }
+        }
+        System.out.println(numList.size());
+
+        for (int i = 0; i < numList.size(); i++) {
+            if (hammingWord[hammingWord.length - numList.get(i)] == 0) {
+                hammingWord[hammingWord.length - numList.get(i)] = 1;
             } else {
-                hammingWord[hammingWord.length - list.get(i)] = 0;
+                hammingWord[hammingWord.length - numList.get(i)] = 0;
             }
         }
     }
@@ -156,25 +165,25 @@ public class HammingErrorDetection {
         String position = "";
         for (int i = 0; i < tab.length; i++) {
             if (tab[i] != tab2[i]) {
-                position += tab.length - i + "; ";
+                position += tab.length - i + " ";
             }
         }
-        position = position.substring(0, position.length() - 2);
+        position = position.substring(0, position.length() - 1);
         return position;
     }
 
     public static Integer[] recoverCorrectCode(Integer[] tab, String position) {
-        List<Integer> list = new ArrayList<>();
-        for (int i = 0; i < position.length(); i++) {
-            if (position.charAt(i) != ' ' && position.charAt(i) != ';') {
-                list.add(Integer.parseInt(String.valueOf(position.charAt(i))));
-            }
+        String[] num = position.split(" ");
+        ArrayList<Integer> numList=new ArrayList<>();
+        for(String str:num){
+            numList.add(Integer.parseInt(str));
         }
-        for (int i = 0; i < list.size(); i++) {
-            if (tab[tab.length - list.get(i)] == 0) {
-                tab[tab.length - list.get(i)] = 1;
+
+        for (int i = 0; i < numList.size(); i++) {
+            if (tab[tab.length - numList.get(i)] == 0) {
+                tab[tab.length - numList.get(i)] = 1;
             } else {
-                tab[tab.length - list.get(i)] = 0;
+                tab[tab.length - numList.get(i)] = 0;
             }
         }
 
