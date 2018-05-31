@@ -150,7 +150,6 @@ public class HammingErrorDetection {
 
             }
         }
-        System.out.println(numList.size());
 
         for (int i = 0; i < numList.size(); i++) {
             if (hammingWord[hammingWord.length - numList.get(i)] == 0) {
