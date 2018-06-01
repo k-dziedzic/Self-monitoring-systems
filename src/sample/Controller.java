@@ -61,7 +61,6 @@ public class Controller {
 
     public void findFile() {
         FileChooser fileChooser = new FileChooser();
-//        fileChooser.setInitialDirectory(new File("../Self-monitoring systems"));
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("TXT files", "*.txt"));
         selectedFile = fileChooser.showOpenDialog(null);
         listView.getItems().clear();
@@ -286,7 +285,7 @@ public class Controller {
 
     public void save() {
         FileSupport.createRaport(hammingCode, PATH, result,mistakePosition);
-        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Raport został zapisany do pliku", ButtonType.OK);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Raport został zapisany do pliku.", ButtonType.OK);
         alert.showAndWait();
     }
 }
