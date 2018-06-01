@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Self-monitoring systems:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Self_monitoring_systems_jar</output-path>
+    <root id="archive" name="Self-monitoring systems.jar">
+      <element id="module-output" name="Self-monitoring systems" />
+    </root>
+  </artifact>
+</component>
