@@ -2,11 +2,7 @@ package sample;
 
 
 import javafx.animation.*;
-import javafx.collections.ObservableList;
 import javafx.scene.control.*;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
@@ -15,7 +11,7 @@ import javafx.scene.image.*;
 import java.io.File;
 import java.util.List;
 
-import static sample.HammingErrorDetection.*;
+import static sample.HammingAlgorithm.*;
 
 public class Controller {
 
@@ -47,10 +43,11 @@ public class Controller {
 
 
     private List<String> wordsFromFile;
-    private Integer[] tab;
+    private Integer[] hammingCode;
     private static final String PATH = "raport.txt";
     private boolean result = false;
     private File selectedFile;
+    private String mistakePosition;
 
     public void fromFile() {
         if (radioButton1.isSelected()) {
@@ -64,13 +61,13 @@ public class Controller {
 
     public void findFile() {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setInitialDirectory(new File("../Self-monitoring systems"));
+//        fileChooser.setInitialDirectory(new File("../Self-monitoring systems"));
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("TXT files", "*.txt"));
         selectedFile = fileChooser.showOpenDialog(null);
         listView.getItems().clear();
 
         if (selectedFile != null) {
-            wordsFromFile = FileReader.loadFile(selectedFile.getAbsolutePath());
+            wordsFromFile = FileSupport.readFile(selectedFile.getAbsolutePath());
             textField3.setVisible(false);
             textField4.setVisible(false);
             textField5.setVisible(false);
@@ -106,9 +103,9 @@ public class Controller {
 
             if (radioButton1.isSelected() && textField2.getText().isEmpty() && !radioButton2.isSelected())
             {
-                tab = createHammingWord(String.valueOf(listView.getSelectionModel().getSelectedItem()));
-                result = checkHammingCorectness(tab);
-                textField3.setText(tableOfIntegerToString(tab));
+                hammingCode = hammingBinaryCode(String.valueOf(listView.getSelectionModel().getSelectedItem()));
+                result = isHammingCorrect(hammingCode);
+                textField3.setText(tableIntegerToString(hammingCode));
                 textField4.setText("brak błędu");
                 textField5.setText("brak błędu");
                 textField6.setText("brak błędu");
@@ -117,37 +114,37 @@ public class Controller {
             }
             else if (radioButton1.isSelected() && radioButton2.isSelected())
             {
-                tab = createHammingWord(String.valueOf(listView.getSelectionModel().getSelectedItem()));
-                textField3.setText(tableOfIntegerToString(tab));
-                injectTheMistakesRandom(tab);
-                result = checkHammingCorectness(tab);
-                textField4.setText(tableOfIntegerToString(tab));
-                String mistakePosition = mistakePostion(tab, createHammingWord(String.valueOf(listView.getSelectionModel().getSelectedItem())));
+                hammingCode = hammingBinaryCode(String.valueOf(listView.getSelectionModel().getSelectedItem()));
+                textField3.setText(tableIntegerToString(hammingCode));
+                injectTheMistakesRandom(hammingCode);
+                result = isHammingCorrect(hammingCode);
+                textField4.setText(tableIntegerToString(hammingCode));
+                mistakePosition = mistakePostion(hammingCode, hammingBinaryCode(String.valueOf(listView.getSelectionModel().getSelectedItem())));
                 textField5.setText(mistakePosition);
-                textField6.setText(tableOfIntegerToString(recoverCorrectCode(tab, mistakePosition)));
+                textField6.setText(tableIntegerToString(recoverCorrectCode(hammingCode, mistakePosition)));
                 textField7.setText(String.valueOf(listView.getSelectionModel().getSelectedItem()));
                 selectedFile=null;
             }
             else if (radioButton1.isSelected() && textField2.getText().matches("[0-99 ]+"))
             {
-                tab = createHammingWord(String.valueOf(listView.getSelectionModel().getSelectedItem()));
+                hammingCode = hammingBinaryCode(String.valueOf(listView.getSelectionModel().getSelectedItem()));
                 String mistakes = textField2.getText();
-                textField3.setText(tableOfIntegerToString(tab));
-                injectTheMistakes(tab, mistakes);
-                result = checkHammingCorectness(tab);
-                textField4.setText(tableOfIntegerToString(tab));
-                String mistakePosition = mistakePostion(tab, createHammingWord(String.valueOf(listView.getSelectionModel().getSelectedItem())));
+                textField3.setText(tableIntegerToString(hammingCode));
+                injectTheMistakes(hammingCode, mistakes);
+                result = isHammingCorrect(hammingCode);
+                textField4.setText(tableIntegerToString(hammingCode));
+                mistakePosition = mistakePostion(hammingCode, hammingBinaryCode(String.valueOf(listView.getSelectionModel().getSelectedItem())));
                 textField5.setText(mistakePosition);
-                textField6.setText(tableOfIntegerToString(recoverCorrectCode(tab, mistakePosition)));
+                textField6.setText(tableIntegerToString(recoverCorrectCode(hammingCode, mistakePosition)));
                 textField7.setText(String.valueOf(listView.getSelectionModel().getSelectedItem()));
                 selectedFile=null;
             }
 
             else if (!textField1.getText().isEmpty() && textField2.getText().isEmpty() && !radioButton2.isSelected())
             {
-                tab = createHammingWord(textField1.getText());
-                result = checkHammingCorectness(tab);
-                textField3.setText(tableOfIntegerToString(tab));
+                hammingCode = hammingBinaryCode(textField1.getText());
+                result = isHammingCorrect(hammingCode);
+                textField3.setText(tableIntegerToString(hammingCode));
                 textField4.setText("brak błędu");
                 textField5.setText("brak błędu");
                 textField6.setText("brak błędu");
@@ -156,28 +153,28 @@ public class Controller {
 
             else if (!textField1.getText().isEmpty() && radioButton2.isSelected())
             {
-                tab = createHammingWord(textField1.getText());
-                textField3.setText(tableOfIntegerToString(tab));
-                injectTheMistakesRandom(tab);
-                result = checkHammingCorectness(tab);
-                textField4.setText(tableOfIntegerToString(tab));
-                String mistakePosition = mistakePostion(tab, createHammingWord(textField1.getText()));
+                hammingCode = hammingBinaryCode(textField1.getText());
+                textField3.setText(tableIntegerToString(hammingCode));
+                injectTheMistakesRandom(hammingCode);
+                result = isHammingCorrect(hammingCode);
+                textField4.setText(tableIntegerToString(hammingCode));
+                mistakePosition = mistakePostion(hammingCode, hammingBinaryCode(textField1.getText()));
                 textField5.setText(mistakePosition);
-                textField6.setText(tableOfIntegerToString(recoverCorrectCode(tab, mistakePosition)));
+                textField6.setText(tableIntegerToString(recoverCorrectCode(hammingCode, mistakePosition)));
                 textField7.setText(textField1.getText());
             }
 
             else if (!textField1.getText().isEmpty() && textField2.getText().matches("[0-99 ]+"))
             {
-                tab = createHammingWord(textField1.getText());
+                hammingCode = hammingBinaryCode(textField1.getText());
                 String mistakes = textField2.getText();
-                textField3.setText(tableOfIntegerToString(tab));
-                injectTheMistakes(tab, mistakes);
-                result = checkHammingCorectness(tab);
-                textField4.setText(tableOfIntegerToString(tab));
-                String mistakePosition = mistakePostion(tab, createHammingWord(textField1.getText()));
+                textField3.setText(tableIntegerToString(hammingCode));
+                injectTheMistakes(hammingCode, mistakes);
+                result = isHammingCorrect(hammingCode);
+                textField4.setText(tableIntegerToString(hammingCode));
+                mistakePosition = mistakePostion(hammingCode, hammingBinaryCode(textField1.getText()));
                 textField5.setText(mistakePosition);
-                textField6.setText(tableOfIntegerToString(recoverCorrectCode(tab, mistakePosition)));
+                textField6.setText(tableIntegerToString(recoverCorrectCode(hammingCode, mistakePosition)));
                 textField7.setText(textField1.getText());
             }
 
@@ -288,7 +285,7 @@ public class Controller {
     }
 
     public void save() {
-        FileReader.saveResult(tab, PATH, result);
+        FileSupport.createRaport(hammingCode, PATH, result,mistakePosition);
         Alert alert = new Alert(Alert.AlertType.INFORMATION, "Raport został zapisany do pliku", ButtonType.OK);
         alert.showAndWait();
     }
