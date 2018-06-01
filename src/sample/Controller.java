@@ -41,7 +41,6 @@ public class Controller {
     public Label label4;
     public ListView listView;
 
-
     private List<String> wordsFromFile;
     private Integer[] hammingCode;
     private static final String PATH = "raport.txt";
@@ -98,12 +97,12 @@ public class Controller {
 
     public void check() {
 
-        if((radioButton1.isSelected() && selectedFile != null && listView.getSelectionModel().getSelectedItem()!=null || !radioButton1.isSelected()) &&((textField1.getText().matches("[01]+"))|| textField1.getText().isEmpty()) &&(textField2.getText().isEmpty() || textField2.getText().matches("[0-99 ]+") || radioButton2.isSelected())) {
+        if((radioButton1.isSelected() && selectedFile != null && listView.getSelectionModel().getSelectedItem()!=null || !radioButton1.isSelected()) &&((textField1.getText().matches("[01]+"))|| textField1.getText().isEmpty()) && (radioButton1.isSelected() || !textField1.getText().isEmpty()) &&(textField2.getText().isEmpty() || textField2.getText().matches("^([0-9]*\\s+)*[0-9]*$") || radioButton2.isSelected())) {
 
             if (radioButton1.isSelected() && textField2.getText().isEmpty() && !radioButton2.isSelected())
             {
                 hammingCode = hammingBinaryCode(String.valueOf(listView.getSelectionModel().getSelectedItem()));
-                result = isHammingCorrect(hammingCode);
+                result = true;
                 textField3.setText(tableIntegerToString(hammingCode));
                 textField4.setText("brak błędu");
                 textField5.setText("brak błędu");
@@ -124,7 +123,7 @@ public class Controller {
                 textField7.setText(String.valueOf(listView.getSelectionModel().getSelectedItem()));
                 selectedFile=null;
             }
-            else if (radioButton1.isSelected() && textField2.getText().matches("[0-99 ]+"))
+            else if (radioButton1.isSelected() && textField2.getText().matches("^([0-9]*\\s+)*[0-9]*$"))
             {
                 hammingCode = hammingBinaryCode(String.valueOf(listView.getSelectionModel().getSelectedItem()));
                 String mistakes = textField2.getText();
@@ -142,7 +141,7 @@ public class Controller {
             else if (!textField1.getText().isEmpty() && textField2.getText().isEmpty() && !radioButton2.isSelected())
             {
                 hammingCode = hammingBinaryCode(textField1.getText());
-                result = isHammingCorrect(hammingCode);
+                result = true;
                 textField3.setText(tableIntegerToString(hammingCode));
                 textField4.setText("brak błędu");
                 textField5.setText("brak błędu");
@@ -163,7 +162,7 @@ public class Controller {
                 textField7.setText(textField1.getText());
             }
 
-            else if (!textField1.getText().isEmpty() && textField2.getText().matches("[0-99 ]+"))
+            else if (!textField1.getText().isEmpty() && textField2.getText().matches("^([0-9]*\\s+)*[0-9]*$"))
             {
                 hammingCode = hammingBinaryCode(textField1.getText());
                 String mistakes = textField2.getText();
@@ -233,9 +232,6 @@ public class Controller {
             delay.play();
         }
         else if(!radioButton1.isSelected() && textField1.getText().isEmpty()){
-            System.out.println(!radioButton1.isSelected());
-            System.out.println(textField1.getText().isEmpty());
-
             Alert alert = new Alert(Alert.AlertType.ERROR, "Wpisz kod binarny lub wybierz go z pliku,\naby wysłać dane.", ButtonType.OK);
             textField1.setStyle("-fx-border-color: red;");
             radioButton1.setStyle("-fx-border-color: red");

@@ -136,20 +136,25 @@ public class HammingAlgorithm {
     }
 
     public static void injectTheMistakes(Integer[] hammingCode, String position) {
-        String[] num = position.split(" ");
+        String[] num = position.split(" +");
         List<Integer> numList=new ArrayList<>();
+        boolean flag=false;
         for(String str:num){
             if(numList.size()==0){
                 numList.add(Integer.parseInt(str));
             }
             else {
                 for (int i = 0; i < numList.size(); i++) {
-                    if (numList.get(i) != Integer.parseInt(str)) {
-                        numList.add(Integer.parseInt(str));
+                    if (numList.get(i) == Integer.parseInt(str)) {
+                        flag=true;
                     }
+                }
+                if(!flag) {
+                    numList.add(Integer.parseInt(str));
                 }
             }
         }
+
 
         for (int i = 0; i < numList.size(); i++) {
             if (numList.get(i)>hammingCode.length) {
@@ -157,6 +162,7 @@ public class HammingAlgorithm {
                 --i;
             }
         }
+
 
         for (int i = 0; i < numList.size(); i++) {
             if (hammingCode[hammingCode.length - numList.get(i)] == 0) {
