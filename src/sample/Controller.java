@@ -44,7 +44,7 @@ public class Controller {
     private List<String> wordsFromFile;
     private Integer[] hammingCode;
     private static final String PATH = "raport.txt";
-    private boolean result = false;
+    private boolean result = true;
     private File selectedFile;
     private String mistakePosition;
 
@@ -96,7 +96,7 @@ public class Controller {
     }
 
     public void check() {
-
+        button3.setDisable(true);
         if((radioButton1.isSelected() && selectedFile != null && listView.getSelectionModel().getSelectedItem()!=null || !radioButton1.isSelected()) &&((textField1.getText().matches("[01]+"))|| textField1.getText().isEmpty()) && (radioButton1.isSelected() || !textField1.getText().isEmpty()) &&(textField2.getText().isEmpty() || textField2.getText().matches("^([0-9]*\\s+)*[0-9]*$") || radioButton2.isSelected())) {
 
             if (radioButton1.isSelected() && textField2.getText().isEmpty() && !radioButton2.isSelected())
@@ -104,9 +104,7 @@ public class Controller {
                 hammingCode = hammingBinaryCode(String.valueOf(listView.getSelectionModel().getSelectedItem()));
                 result = true;
                 textField3.setText(tableIntegerToString(hammingCode));
-                textField4.setText("brak błędu");
-                textField5.setText("brak błędu");
-                textField6.setText("brak błędu");
+                noErrors();
                 textField7.setText(String.valueOf(listView.getSelectionModel().getSelectedItem()));
                 selectedFile=null;
             }
@@ -130,10 +128,15 @@ public class Controller {
                 textField3.setText(tableIntegerToString(hammingCode));
                 injectTheMistakes(hammingCode, mistakes);
                 result = isHammingCorrect(hammingCode);
-                textField4.setText(tableIntegerToString(hammingCode));
-                mistakePosition = mistakePostion(hammingCode, hammingBinaryCode(String.valueOf(listView.getSelectionModel().getSelectedItem())));
-                textField5.setText(mistakePosition);
-                textField6.setText(tableIntegerToString(recoverCorrectCode(hammingCode, mistakePosition)));
+                if(result==true){
+                    noErrors();
+                }
+                else {
+                    textField4.setText(tableIntegerToString(hammingCode));
+                    mistakePosition = mistakePostion(hammingCode, hammingBinaryCode(String.valueOf(listView.getSelectionModel().getSelectedItem())));
+                    textField5.setText(mistakePosition);
+                    textField6.setText(tableIntegerToString(recoverCorrectCode(hammingCode, mistakePosition)));
+                }
                 textField7.setText(String.valueOf(listView.getSelectionModel().getSelectedItem()));
                 selectedFile=null;
             }
@@ -143,9 +146,7 @@ public class Controller {
                 hammingCode = hammingBinaryCode(textField1.getText());
                 result = true;
                 textField3.setText(tableIntegerToString(hammingCode));
-                textField4.setText("brak błędu");
-                textField5.setText("brak błędu");
-                textField6.setText("brak błędu");
+                noErrors();
                 textField7.setText(textField1.getText());
             }
 
@@ -169,10 +170,15 @@ public class Controller {
                 textField3.setText(tableIntegerToString(hammingCode));
                 injectTheMistakes(hammingCode, mistakes);
                 result = isHammingCorrect(hammingCode);
-                textField4.setText(tableIntegerToString(hammingCode));
-                mistakePosition = mistakePostion(hammingCode, hammingBinaryCode(textField1.getText()));
-                textField5.setText(mistakePosition);
-                textField6.setText(tableIntegerToString(recoverCorrectCode(hammingCode, mistakePosition)));
+                if(result==true){
+                    noErrors();
+                }
+                else {
+                    textField4.setText(tableIntegerToString(hammingCode));
+                    mistakePosition = mistakePostion(hammingCode, hammingBinaryCode(textField1.getText()));
+                    textField5.setText(mistakePosition);
+                    textField6.setText(tableIntegerToString(recoverCorrectCode(hammingCode, mistakePosition)));
+                }
                 textField7.setText(textField1.getText());
             }
 
@@ -228,8 +234,10 @@ public class Controller {
                 imageView1.setVisible(false);
                 imageView2.setVisible(false);
                 progressBar.setVisible(false);
+                button3.setDisable(false);
             });
             delay.play();
+
         }
         else if(!radioButton1.isSelected() && textField1.getText().isEmpty()){
             Alert alert = new Alert(Alert.AlertType.ERROR, "Wpisz kod binarny lub wybierz go z pliku,\naby wysłać dane.", ButtonType.OK);
@@ -283,5 +291,11 @@ public class Controller {
         FileSupport.createRaport(hammingCode, PATH, result,mistakePosition);
         Alert alert = new Alert(Alert.AlertType.INFORMATION, "Raport został zapisany do pliku.", ButtonType.OK);
         alert.showAndWait();
+    }
+
+    private void noErrors(){
+        textField4.setText("brak błędu");
+        textField5.setText("brak błędu");
+        textField6.setText("brak błędu");
     }
 }

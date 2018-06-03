@@ -140,18 +140,20 @@ public class HammingAlgorithm {
         List<Integer> numList=new ArrayList<>();
         boolean flag=false;
         for(String str:num){
-            if(numList.size()==0){
-                numList.add(Integer.parseInt(str));
-            }
-            else {
-                for (int i = 0; i < numList.size(); i++) {
-                    if (numList.get(i) == Integer.parseInt(str)) {
-                        flag=true;
+            if(!str.equals("")) {
+                if (numList.size() == 0) {
+                    numList.add(Integer.parseInt(str));
+                } else {
+                    for (int i = 0; i < numList.size(); i++) {
+                        if (numList.get(i) == Integer.parseInt(str)) {
+                            flag = true;
+                        }
+                    }
+                    if (!flag) {
+                        numList.add(Integer.parseInt(str));
                     }
                 }
-                if(!flag) {
-                    numList.add(Integer.parseInt(str));
-                }
+                flag = false;
             }
         }
 
@@ -180,7 +182,9 @@ public class HammingAlgorithm {
                 position += tabWithMistakes.length - i + " ";
             }
         }
-        position = position.substring(0, position.length() - 1);
+        if(!position.equals("")) {
+            position = position.substring(0, position.length() - 1);
+        }
         return position;
     }
 

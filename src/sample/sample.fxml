@@ -80,7 +80,7 @@
                   </Text>
                   <TextField fx:id="textField7" editable="false" layoutX="29.0" layoutY="267.0" prefHeight="26.0" prefWidth="251.0" style="-fx-background-color: #fff;" />
                   <TextField fx:id="textField3" editable="false" layoutX="29.0" layoutY="81.0" prefHeight="26.0" prefWidth="251.0" style="-fx-background-color: #fff;" />
-                  <Button fx:id="button3" layoutX="57.0" layoutY="330.0" mnemonicParsing="false" onMouseClicked="#save" prefHeight="41.0" prefWidth="227.0" style="-fx-background-color: #3c58fa;" text="Zapisz" />
+                  <Button fx:id="button3" disable="true" layoutX="57.0" layoutY="330.0" mnemonicParsing="false" onMouseClicked="#save" prefHeight="41.0" prefWidth="227.0" style="-fx-background-color: #3c58fa;" text="Zapisz" />
                   <Label fx:id="label1" layoutX="93.0" layoutY="24.0" style="-fx-alignment: #2196f3;" text="Wynik transmisji" textFill="#2196f3">
                      <font>
                         <Font size="18.0" />
