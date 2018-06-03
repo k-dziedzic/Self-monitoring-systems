@@ -30,9 +30,9 @@ public class FileSupport {
         try {
             PrintWriter printWriter = new PrintWriter(path);
 
-            printWriter.println("Plik zostal wygenerowany :" + date.toString()+".");
+            printWriter.println("Plik zostal wygenerowany :" + date.toString() + ".");
             printWriter.print("Utworzone słowo Hamminga to: ");
-            for (int i = hammingWord.length-1; i >=0; i--) {
+            for (int i = hammingWord.length - 1; i >= 0; i--) {
                 printWriter.print(hammingWord[i]);
             }
             printWriter.print(".");
@@ -41,11 +41,10 @@ public class FileSupport {
                 printWriter.println("Po przeprowadzeniu testu transmisji, nie wykryto przeklaman.");
             } else {
                 printWriter.println("Po przeprowadzeniu testu transmisji, zostaly wykryte przeklamania.");
-                printWriter.println("Błędy wystąpiły na pozycjach: "+position+".");
-                if(position.length()>1){
+                printWriter.println("Błędy wystąpiły na pozycjach: " + position + ".");
+                if (position.length() > 1) {
                     printWriter.println("Błędy nie mogą zostać naprawione.");
-                }
-                else{
+                } else {
                     printWriter.println("Błędy zostały naprawione.");
                 }
             }

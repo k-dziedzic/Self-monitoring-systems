@@ -5,13 +5,15 @@ import java.util.List;
 import java.util.Random;
 
 public class HammingAlgorithm {
+    private static String mistakePosition;
+
     private static boolean isPowerOfTwo(int number) {
         boolean isPowerOfTwo = false;
         if (number == 1) {
             isPowerOfTwo = true;
         } else {
             while (number % 2 == 0) {
-                number =number / 2;
+                number = number / 2;
                 if (number == 1) {
                     isPowerOfTwo = true;
                     break;
@@ -71,10 +73,10 @@ public class HammingAlgorithm {
             }
         }
 
-        Integer [] hc=new Integer[hammingCode.length];
-        int j=0;
-        for(int i=hammingCode.length-1;i>=0;i--){
-            hc[j]=hammingCode[i];
+        Integer[] hc = new Integer[hammingCode.length];
+        int j = 0;
+        for (int i = hammingCode.length - 1; i >= 0; i--) {
+            hc[j] = hammingCode[i];
             ++j;
         }
         return hc;
@@ -95,13 +97,20 @@ public class HammingAlgorithm {
         return indexValue;
     }
 
-    public static boolean isHammingCorrect(Integer[] hammingCode) {
+    public static boolean isHammingCorrect(Integer[] hammingCodeReceived) {
+        mistakePosition = "";
+        Integer[] hc = new Integer[hammingCodeReceived.length];
+        int k = 0;
+        for (int i = hammingCodeReceived.length - 1; i >= 0; i--) {
+            hc[k] = hammingCodeReceived[i];
+            ++k;
+        }
         int indexValue = 0;
         boolean correctness = true;
         List<String> informationBitsIndexes = new ArrayList<>();
-        
-        for (int i = hammingCode.length - 1; i >= 0; i--) {
-            indexValue = getIndexValue(indexValue, informationBitsIndexes, hammingCode, i);
+
+        for (int i = hc.length - 1; i >= 0; i--) {
+            indexValue = getIndexValue(indexValue, informationBitsIndexes, hc, i);
         }
 
         for (int j = 0; j < informationBitsIndexes.get(0).length(); j++) {
@@ -112,7 +121,10 @@ public class HammingAlgorithm {
                 }
             }
             if (numberRowWithOneInColumn % 2 != 0) {
+                mistakePosition += "1";
                 correctness = false;
+            } else {
+                mistakePosition += "0";
             }
         }
         return correctness;
@@ -125,11 +137,10 @@ public class HammingAlgorithm {
             int random = randomIndex.nextInt(hammingCode.length);
             boolean b = (hammingCode[random] != 0);
             Integer negate;
-            if(!b){
-                negate=1;
-            }
-            else{
-                negate=0;
+            if (!b) {
+                negate = 1;
+            } else {
+                negate = 0;
             }
             hammingCode[random] = negate;
         }
@@ -137,10 +148,10 @@ public class HammingAlgorithm {
 
     public static void injectTheMistakes(Integer[] hammingCode, String position) {
         String[] num = position.split(" +");
-        List<Integer> numList=new ArrayList<>();
-        boolean flag=false;
-        for(String str:num){
-            if(!str.equals("")) {
+        List<Integer> numList = new ArrayList<>();
+        boolean flag = false;
+        for (String str : num) {
+            if (!str.equals("")) {
                 if (numList.size() == 0) {
                     numList.add(Integer.parseInt(str));
                 } else {
@@ -157,16 +168,12 @@ public class HammingAlgorithm {
             }
         }
 
-
-
-
         for (int i = 0; i < numList.size(); i++) {
-            if (numList.get(i)>hammingCode.length) {
+            if (numList.get(i) > hammingCode.length) {
                 numList.remove(i);
                 --i;
             }
         }
-
 
         for (int i = 0; i < numList.size(); i++) {
             if (hammingCode[hammingCode.length - numList.get(i)] == 0) {
@@ -177,38 +184,25 @@ public class HammingAlgorithm {
         }
     }
 
-    public static String mistakePostion(Integer[] tabWithMistakes, Integer[] tabWithoutMistakes) {
+    public static String mistakePostions(Integer[] tabWithMistakes, Integer[] tabWithoutMistakes) {
         String position = "";
         for (int i = 0; i < tabWithMistakes.length; i++) {
             if (tabWithMistakes[i] != tabWithoutMistakes[i]) {
                 position += tabWithMistakes.length - i + " ";
             }
         }
-        if(!position.equals("")) {
+        if (!position.equals("")) {
             position = position.substring(0, position.length() - 1);
         }
         return position;
     }
 
     public static Integer[] recoverCorrectCode(Integer[] tabWithMistakes, String position) {
-        String[] num = position.split(" ");
-        List<Integer> numList=new ArrayList<>();
-        String temp="";
-        for(String str:num){
-            temp+=str;
-        }
-        if(!temp.equals("")) {
-            for (String str : num) {
-                numList.add(Integer.parseInt(str));
-            }
-
-            for (int i = 0; i < numList.size(); i++) {
-                if (tabWithMistakes[tabWithMistakes.length - numList.get(i)] == 0) {
-                    tabWithMistakes[tabWithMistakes.length - numList.get(i)] = 1;
-                } else {
-                    tabWithMistakes[tabWithMistakes.length - numList.get(i)] = 0;
-                }
-            }
+        int positionToChange = Integer.parseInt(mistakePosition, 2);
+        if (tabWithMistakes[tabWithMistakes.length - positionToChange] == 1) {
+            tabWithMistakes[tabWithMistakes.length - positionToChange] = 0;
+        } else {
+            tabWithMistakes[tabWithMistakes.length - positionToChange] = 1;
         }
         return tabWithMistakes;
     }
