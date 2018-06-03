@@ -18,8 +18,12 @@ public class FileSupport {
         }
 
         List<String> list = new ArrayList<>();
+        String temp="";
         while (s.hasNextLine()) {
-            list.add(s.nextLine());
+            temp=s.nextLine();
+            if(temp.matches("[01]+")) {
+                list.add(temp);
+            }
         }
         s.close();
         return list;

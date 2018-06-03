@@ -214,4 +214,10 @@ public class HammingAlgorithm {
         }
         return hammingWord;
     }
+
+    public static int numberOfMistake(String mistakes)
+    {
+        String[] miss = mistakes.split(" +");
+        return miss.length;
+    }
 }
