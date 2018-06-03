@@ -42,7 +42,12 @@ public class FileSupport {
             } else {
                 printWriter.println("Po przeprowadzeniu testu transmisji, zostaly wykryte przeklamania.");
                 printWriter.println("Błędy wystąpiły na pozycjach: "+position+".");
-                printWriter.println("Błędy zostały naprawione.");
+                if(position.length()>1){
+                    printWriter.println("Błędy nie mogą zostać naprawione.");
+                }
+                else{
+                    printWriter.println("Błędy zostały naprawione.");
+                }
             }
             printWriter.close();
         } catch (FileNotFoundException e) {

@@ -158,6 +158,8 @@ public class HammingAlgorithm {
         }
 
 
+
+
         for (int i = 0; i < numList.size(); i++) {
             if (numList.get(i)>hammingCode.length) {
                 numList.remove(i);
@@ -191,15 +193,21 @@ public class HammingAlgorithm {
     public static Integer[] recoverCorrectCode(Integer[] tabWithMistakes, String position) {
         String[] num = position.split(" ");
         List<Integer> numList=new ArrayList<>();
+        String temp="";
         for(String str:num){
-            numList.add(Integer.parseInt(str));
+            temp+=str;
         }
+        if(!temp.equals("")) {
+            for (String str : num) {
+                numList.add(Integer.parseInt(str));
+            }
 
-        for (int i = 0; i < numList.size(); i++) {
-            if (tabWithMistakes[tabWithMistakes.length - numList.get(i)] == 0) {
-                tabWithMistakes[tabWithMistakes.length - numList.get(i)] = 1;
-            } else {
-                tabWithMistakes[tabWithMistakes.length - numList.get(i)] = 0;
+            for (int i = 0; i < numList.size(); i++) {
+                if (tabWithMistakes[tabWithMistakes.length - numList.get(i)] == 0) {
+                    tabWithMistakes[tabWithMistakes.length - numList.get(i)] = 1;
+                } else {
+                    tabWithMistakes[tabWithMistakes.length - numList.get(i)] = 0;
+                }
             }
         }
         return tabWithMistakes;

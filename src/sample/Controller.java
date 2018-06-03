@@ -117,8 +117,13 @@ public class Controller {
                 textField4.setText(tableIntegerToString(hammingCode));
                 mistakePosition = mistakePostion(hammingCode, hammingBinaryCode(String.valueOf(listView.getSelectionModel().getSelectedItem())));
                 textField5.setText(mistakePosition);
-                textField6.setText(tableIntegerToString(recoverCorrectCode(hammingCode, mistakePosition)));
-                textField7.setText(String.valueOf(listView.getSelectionModel().getSelectedItem()));
+                if(mistakePosition.length()>1){
+                    toMuchErrors();
+                }
+                else{
+                    textField6.setText(tableIntegerToString(recoverCorrectCode(hammingCode, mistakePosition)));
+                    textField7.setText(String.valueOf(listView.getSelectionModel().getSelectedItem()));
+                }
                 selectedFile=null;
             }
             else if (radioButton1.isSelected() && textField2.getText().matches("^([0-9]*\\s+)*[0-9]*$"))
@@ -135,9 +140,14 @@ public class Controller {
                     textField4.setText(tableIntegerToString(hammingCode));
                     mistakePosition = mistakePostion(hammingCode, hammingBinaryCode(String.valueOf(listView.getSelectionModel().getSelectedItem())));
                     textField5.setText(mistakePosition);
-                    textField6.setText(tableIntegerToString(recoverCorrectCode(hammingCode, mistakePosition)));
+                    if(mistakePosition.length()>1){
+                        toMuchErrors();
+                    }
+                    else {
+                        textField6.setText(tableIntegerToString(recoverCorrectCode(hammingCode, mistakePosition)));
+                        textField7.setText(String.valueOf(listView.getSelectionModel().getSelectedItem()));
+                    }
                 }
-                textField7.setText(String.valueOf(listView.getSelectionModel().getSelectedItem()));
                 selectedFile=null;
             }
 
@@ -159,8 +169,13 @@ public class Controller {
                 textField4.setText(tableIntegerToString(hammingCode));
                 mistakePosition = mistakePostion(hammingCode, hammingBinaryCode(textField1.getText()));
                 textField5.setText(mistakePosition);
-                textField6.setText(tableIntegerToString(recoverCorrectCode(hammingCode, mistakePosition)));
-                textField7.setText(textField1.getText());
+                if(mistakePosition.length()>1){
+                    toMuchErrors();
+                }
+                else {
+                    textField6.setText(tableIntegerToString(recoverCorrectCode(hammingCode, mistakePosition)));
+                    textField7.setText(textField1.getText());
+                }
             }
 
             else if (!textField1.getText().isEmpty() && textField2.getText().matches("^([0-9]*\\s+)*[0-9]*$"))
@@ -177,9 +192,15 @@ public class Controller {
                     textField4.setText(tableIntegerToString(hammingCode));
                     mistakePosition = mistakePostion(hammingCode, hammingBinaryCode(textField1.getText()));
                     textField5.setText(mistakePosition);
-                    textField6.setText(tableIntegerToString(recoverCorrectCode(hammingCode, mistakePosition)));
+                    if(mistakePosition.length()>1){
+                        toMuchErrors();
+                    }
+                    else {
+
+                        textField6.setText(tableIntegerToString(recoverCorrectCode(hammingCode, mistakePosition)));
+                        textField7.setText(textField1.getText());
+                    }
                 }
-                textField7.setText(textField1.getText());
             }
 
             listView.setStyle("-fx-border-color: null;");
@@ -294,8 +315,13 @@ public class Controller {
     }
 
     private void noErrors(){
-        textField4.setText("brak błędu");
-        textField5.setText("brak błędu");
-        textField6.setText("brak błędu");
+        textField4.setText("Brak błędu.");
+        textField5.setText("Brak błędu.");
+        textField6.setText("Brak błędu.");
+    }
+
+    private void toMuchErrors(){
+        textField6.setText("Zbyt dużo błędów.");
+        textField7.setText("Nie można odwtorzyć wiadomości.");
     }
 }
