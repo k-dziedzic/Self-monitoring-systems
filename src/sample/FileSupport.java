@@ -8,6 +8,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
+import static sample.HammingAlgorithm.numberOfMistake;
+
 public class FileSupport {
     public static List<String> readFile(String path) {
         Scanner s = null;
@@ -18,16 +20,17 @@ public class FileSupport {
         }
 
         List<String> list = new ArrayList<>();
-        String temp="";
+        String temp = "";
         while (s.hasNextLine()) {
-            temp=s.nextLine();
-            if(temp.matches("[01]+")) {
+            temp = s.nextLine();
+            if (temp.matches("[01]+")) {
                 list.add(temp);
             }
         }
         s.close();
         return list;
     }
+
 
     public static void createRaport(Integer[] hammingWord, String path, boolean result, String position) {
         Date date = new Date();
@@ -41,15 +44,20 @@ public class FileSupport {
             }
             printWriter.print(".");
             printWriter.println();
-            if (result) {
+            if (result && position.equals("")) {
                 printWriter.println("Po przeprowadzeniu testu transmisji, nie wykryto przeklaman.");
             } else {
-                printWriter.println("Po przeprowadzeniu testu transmisji, zostaly wykryte przeklamania.");
-                printWriter.println("Błędy wystąpiły na pozycjach: " + position + ".");
-                if (position.length() > 1) {
+                if (numberOfMistake(position) == 1) {
+                    printWriter.println("Po przeprowadzeniu testu transmisji, zostaly wykryte przeklamania.");
+                    printWriter.println("Błędy wystąpiły na pozycjach: " + position + ".");
+                    printWriter.println("Błędy zostały naprawione.");
+                } else if (numberOfMistake(position) == 2) {
+                    printWriter.println("Po przeprowadzeniu testu transmisji, zostaly wykryte przeklamania.");
+                    printWriter.println("Błędy wystąpiły na pozycjach: " + position + ".");
                     printWriter.println("Błędy nie mogą zostać naprawione.");
                 } else {
-                    printWriter.println("Błędy zostały naprawione.");
+                    printWriter.println("Po przeprowadzeniu testu transmisji, zostaly wykryte przeklamania.");
+                    printWriter.println("Wystąpiło zbyt dużo błędów, aby można było wskazać ich pozycje.");
                 }
             }
             printWriter.close();
@@ -57,4 +65,5 @@ public class FileSupport {
             e.printStackTrace();
         }
     }
+
 }

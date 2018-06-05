@@ -194,10 +194,11 @@ public class HammingAlgorithm {
         if (!position.equals("")) {
             position = position.substring(0, position.length() - 1);
         }
+
         return position;
     }
 
-    public static Integer[] recoverCorrectCode(Integer[] tabWithMistakes, String position) {
+    public static Integer[] recoverCorrectCode(Integer[] tabWithMistakes) {
         int positionToChange = Integer.parseInt(mistakePosition, 2);
         if (tabWithMistakes[tabWithMistakes.length - positionToChange] == 1) {
             tabWithMistakes[tabWithMistakes.length - positionToChange] = 0;
